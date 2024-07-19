@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Data Fetcher</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        table.data {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table.data th, table.data td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table.data th {
+            background-color: #f2f2f2;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">URL Data Fetcher</h1>
+
+        {% if message %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="url">Enter URL:</label>
+                <input type="text" class="form-control" id="url" name="url" placeholder="Enter URL">
+            </div>
+            <div class="form-group">
+                <label>Select Information to Fetch:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="title" name="info_type" value="title">
+                    <label class="form-check-label" for="title">Title</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="headings" name="info_type" value="headings">
+                    <label class="form-check-label" for="headings">Headings</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="paragraphs" name="info_type" value="paragraphs">
+                    <label class="form-check-label" for="paragraphs">Paragraphs</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="links" name="info_type" value="links">
+                    <label class="form-check-label" for="links">Links</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Fetch Data</button>
+        </form>
+
+        {% if title %}
+            <div class="section">
+                <h2>Title</h2>
+                <p>{{ title }}</p>
+                {% if title_analysis %}
+                    <h3>Title Analysis</h3>
+                    <img src="data:image/png;base64,{{ title_analysis }}" alt="Title Word Cloud">
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if headings %}
+            <div class="section">
+                <h2>Headings</h2>
+                <ul>
+                    {% for heading in headings %}
+                        <li>{{ heading }}</li>
+                    {% endfor %}
+                </ul>
+                {% if headings_analysis %}
+                    <h3>Headings Analysis</h3>
+                    <img src="data:image/png;base64,{{ headings_analysis }}" alt="Headings Word Cloud">
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if paragraphs %}
+            <div class="section">
+                <h2>Paragraphs</h2>
+                {% for paragraph in paragraphs %}
+                    <p>{{ paragraph }}</p>
+                {% endfor %}
+                {% if paragraph_analysis %}
+                    <h3>Paragraphs Analysis</h3>
+                    <img src="data:image/png;base64,{{ paragraph_analysis }}" alt="Paragraphs Word Cloud">
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if links %}
+            <div class="section links">
+                <h2>Links</h2>
+                <ul>
+                    {% for link in links %}
+                        <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if category_plot %}
+            <div class="section">
+                <h2>Word Categories</h2>
+                <img src="data:image/png;base64,{{ category_plot }}" alt="Word Categories">
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
